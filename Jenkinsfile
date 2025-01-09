@@ -1,41 +1,43 @@
 pipeline {
-    agent any
+    agent any  // Define que o pipeline pode rodar em qualquer agente disponível
+
     environment {
-        CYPRESS_CACHE_FOLDER = "${WORKSPACE}/.cache/Cypress"
+        NODE_VERSION = '20'  // A versão do Node.js que você deseja instalar
+        CYPRESS_VERSION = '13.0.0'  // Versão do Cypress (alterar conforme necessário)
     }
+
     stages {
         stage('Preparar Ambiente') {
             steps {
                 script {
-                    if (!fileExists('node_modules')) {
-                        echo 'Instalando dependências...'
-                        sh 'npm install'
-                    }
+                    echo 'Instalando Node.js...'
+
+                    // Instalar o Node.js usando o NVM (Node Version Manager)
+                    sh '''
+                        curl -sL https://deb.nodesource.com/setup_${NODE_VERSION}.x | sudo -E bash -
+                        sudo apt-get install -y nodejs
+                    '''
+                    
+                    // Verifique se o Node.js foi instalado corretamente
+                    sh 'node -v'
+                    sh 'npm -v'
                 }
             }
         }
 
-        stage('Executar Cypress Tests') {
+        stage('Instalar Dependências') {
             steps {
                 script {
-                    echo 'Rodando testes Cypress...'
-                    sh 'npx cypress run'
+                    echo 'Instalando dependências do Node.js...'
+                    
+                    // Instalar dependências do projeto
+                    sh 'npm install'  // Instala o Cypress e outras dependências listadas no package.json
                 }
             }
         }
-    }
 
-    post {
-        always {
-            echo 'Pipeline finalizado.'
-        }
-
-        success {
-            echo 'Testes concluídos com sucesso.'
-        }
-
-        failure {
-            echo 'Testes falharam. Verifique os relatórios para mais detalhes.'
-        }
-    }
-}
+        stage('Instalar Cypress') {
+            steps {
+                script {
+                    echo "Instalando o Cypress versão ${CYPRESS_VERSION}..."
+           
