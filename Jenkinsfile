@@ -1,49 +1,24 @@
 pipeline {
-    agent any  // Define que o pipeline pode rodar em qualquer agente disponível
+    agent any
 
     environment {
-        NODE_VERSION = '20'  // A versão do Node.js que você deseja instalar
-        CYPRESS_VERSION = '13.0.0'  // Versão do Cypress (alterar conforme necessário)
+        NODE_VERSION = '16'  // A versão do Node.js que você deseja instalar
+        SUDO_PASSWORD = 'sua_senha_aqui'  // Defina a senha do sudo
     }
 
     stages {
-        stage('Preparar Ambiente') {
+        stage('Instalar Node.js') {
             steps {
                 script {
                     echo 'Instalando Node.js...'
 
-                    // Instalar o Node.js usando o NVM (Node Version Manager)
-                    sh '''
-                        curl -sL https://deb.nodesource.com/setup_${NODE_VERSION}.x | sudo -E bash -
-                        sudo apt install -y nodejs
-                    '''
-                    
-                    // Verifique se o Node.js foi instalado corretamente
-                    sh 'node -v'
-                    sh 'npm -v'
-                }
-            }
-        }
-
-        stage('Instalar Dependências') {
-            steps {
-                script {
-                    echo 'Instalando dependências do Node.js...'
-                    
-                    // Instalar dependências do projeto
-                    sh 'sudo npm install'  // Instala o Cypress e outras dependências listadas no package.json
-                }
-            }
-        }
-
-        stage('Instalar Cypress') {
-            steps {
-                script {
-                    echo "Instalando o Cypress versão ${CYPRESS_VERSION}..."
-           
+                    // Enviar a senha para o sudo usando o comando 'echo' e o 'sudo -S'
+                    sh """
+                        echo \$SUDO_PASSWORD | sudo -S curl -sL https://deb.nodesource.com/setup_\${NODE_VERSION}.x | bash -
+                        echo \$SUDO_PASSWORD | sudo -S apt install -y nodejs
+                    """
                 }
             }
         }
     }
 }
-    
