@@ -2,7 +2,7 @@ pipeline {
     agent any  // Define que o pipeline pode rodar em qualquer agente disponível
 
     tools {
-        nodejs 'nodejs'  // Nome dado à configuração do NodeJS no Jenkins
+        nodejs 'Node'  // Nome dado à configuração do NodeJS no Jenkins
     }
 
     stages {
