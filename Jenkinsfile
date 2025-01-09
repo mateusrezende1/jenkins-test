@@ -6,43 +6,6 @@ pipeline {
         SUDO_PASSWORD = '123456'  // Substitua pela sua senha do sudo
     }
 
-    stages {
-        stage('Instalar Homebrew (se necessário)') {
-            steps {
-                script {
-                    echo 'Instalando o Homebrew se necessário...'
-
-                    // Usar sudo para verificar e instalar o Homebrew
-                    sh '''
-                        echo \$SUDO_PASSWORD | sudo -S command -v brew > /dev/null
-                        if [ $? -ne 0 ]; then
-                            echo "Homebrew não encontrado. Instalando..."
-                            echo \$SUDO_PASSWORD | sudo -S /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-                        else
-                            echo "Homebrew já está instalado."
-                        fi
-                    '''
-                }
-            }
-        }
-
-        stage('Instalar Node.js') {
-            steps {
-                script {
-                    echo 'Instalando o Node.js com Homebrew...'
-
-                    // Usar sudo para instalar o Node.js
-                    sh '''
-                        echo \$SUDO_PASSWORD | sudo -S brew install node@${NODE_VERSION}
-                    '''
-                    
-                    // Verificar se a instalação foi bem-sucedida
-                    sh 'node -v'
-                    sh 'npm -v'
-                }
-            }
-        }
-
         stage('Instalar Dependências do Projeto') {
             steps {
                 script {
