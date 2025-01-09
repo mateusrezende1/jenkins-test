@@ -3,7 +3,7 @@ pipeline {
 
     environment {
         NODE_VERSION = '16'  // A versão do Node.js que você deseja instalar
-        SUDO_PASSWORD = 'sua_senha_aqui'  // Defina a senha do sudo
+        SUDO_PASSWORD = '123456'  // Defina a senha do sudo
     }
 
     stages {
