@@ -15,7 +15,7 @@ pipeline {
                     // Instalar o Node.js usando o NVM (Node Version Manager)
                     sh '''
                         curl -sL https://deb.nodesource.com/setup_${NODE_VERSION}.x | sudo -E bash -
-                        sudo apt-get install -y nodejs
+                        sudo apt install -y nodejs
                     '''
                     
                     // Verifique se o Node.js foi instalado corretamente
@@ -31,7 +31,7 @@ pipeline {
                     echo 'Instalando dependências do Node.js...'
                     
                     // Instalar dependências do projeto
-                    sh 'npm install'  // Instala o Cypress e outras dependências listadas no package.json
+                    sh 'sudo npm install'  // Instala o Cypress e outras dependências listadas no package.json
                 }
             }
         }
