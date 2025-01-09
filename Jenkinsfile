@@ -2,7 +2,8 @@ pipeline {
     agent any  // Define que o pipeline pode rodar em qualquer agente disponível
 
     environment {
-        NODE_VERSION = '20'  // Defina a versão do Node.js que você deseja instalar
+        NODE_VERSION = '20'  // Versão do Node.js que você deseja instalar
+        SUDO_PASSWORD = '123456'  // Substitua pela sua senha do sudo
     }
 
     stages {
@@ -11,11 +12,12 @@ pipeline {
                 script {
                     echo 'Instalando o Homebrew se necessário...'
 
-                    // Verifica se o Homebrew está instalado e instala, se necessário
+                    // Usar sudo para verificar e instalar o Homebrew
                     sh '''
-                        if ! command -v brew &> /dev/null; then
+                        echo \$SUDO_PASSWORD | sudo -S command -v brew > /dev/null
+                        if [ $? -ne 0 ]; then
                             echo "Homebrew não encontrado. Instalando..."
-                            /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+                            echo \$SUDO_PASSWORD | sudo -S /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
                         else
                             echo "Homebrew já está instalado."
                         fi
@@ -29,9 +31,9 @@ pipeline {
                 script {
                     echo 'Instalando o Node.js com Homebrew...'
 
-                    // Instalar o Node.js com o Homebrew
+                    // Usar sudo para instalar o Node.js
                     sh '''
-                        brew install node@${NODE_VERSION}
+                        echo \$SUDO_PASSWORD | sudo -S brew install node@${NODE_VERSION}
                     '''
                     
                     // Verificar se a instalação foi bem-sucedida
