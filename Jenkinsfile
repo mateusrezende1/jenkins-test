@@ -1,11 +1,6 @@
 pipeline {
     agent any  // Define que o pipeline pode rodar em qualquer agente disponível
 
-    environment {
-        NODE_VERSION = '20'  // Versão do Node.js que você deseja instalar
-        SUDO_PASSWORD = '123456'  // Substitua pela sua senha do sudo
-    }
-
         stage('Instalar Dependências do Projeto') {
             steps {
                 script {
@@ -27,7 +22,7 @@ pipeline {
                 }
             }
         }
-    }
+}    
 
     post {
         always {
@@ -42,4 +37,4 @@ pipeline {
             echo 'Pipeline falhou. Verifique os logs para mais detalhes.'
         }
     }
-}
+
