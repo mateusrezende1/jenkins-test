@@ -7,6 +7,8 @@ pipeline {
                 script {
                     echo 'Instalando dependências do projeto...'
                     // Instalar as dependências do projeto (se houver package.json)
+                    sh 'node -v'
+                    sh 'npm -v'
                     sh 'npm install'
                 }
             }
@@ -17,6 +19,7 @@ pipeline {
                 script {
                     echo 'Executando os testes com Cypress...'
                     // Executa os testes Cypress (se o Cypress estiver configurado no projeto)
+
                     sh 'npx cypress run'
                 }
             }
