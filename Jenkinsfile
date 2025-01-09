@@ -41,3 +41,8 @@ pipeline {
                 script {
                     echo "Instalando o Cypress versão ${CYPRESS_VERSION}..."
            
+                }
+            }
+        }
+
+    }
